@@ -10,13 +10,19 @@
     <header>
       <h1>Headline goes here</h1>
       <p>Maybe also the search bar goes here, but in a form?</p>
+      <form method="GET">
+        <label for="searchbar"></label>
+        <input type="text" name="searchbar" id="searchbar" placeholder="Chicken Teriyaki">
+        <button class="searchbutton" type="submit">Search</button>
+      </form>
     </header>
     <main>
+      <p class="instructions">Directions go here, but they go away once the user hits enter.</p>
       <div class="container" id="restaurants">
-
+        <p>This is the list of nearby restaurants with the food on the menu</p>
       </div>
       <div class="container" id="recipes">
-
+        <p>This is the list of recipes for the food in question</p>
       </div>
     </main>
     <script
