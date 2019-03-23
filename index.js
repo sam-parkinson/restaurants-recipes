@@ -22,19 +22,26 @@ function getRestaurant(food) {
 }
 
 function addRecipes(recipeJson) {
+  $('#recipes ul').empty();
   const recData = recipeJson.meals;
-  console.log(recData);
   for (let i = 0; i < recData.length; i++) {
-    console.log(recData[i].strMeal);
-    console.log(recData[i].strInstructions);
+    $('#recipes ul').append(
+      `<li id="${recData[i].strMeal}">${recData[i].strMeal}
+        <p>${recData[i].strInstructions}</p>
+        <ol id="recipes-${i}">Ingredients:</ol>
+      </li>`
+    );
+  }
+  for (let i = 0; i < recData.length; i++) {
     let j = 1;
     while (recData[i][`strIngredient${j}`] != '') {
-      console.log(recData[i][`strIngredient${j}`]);
-      console.log(recData[i][`strMeasure${j}`]);
+      $(`#recipes-${i}`).append(
+        `<li>${recData[i][`strIngredient${j}`]}: ${recData[i][`strMeasure${j}`]}</li>`
+      );
       j++;
     }
   }
-  // add the recipes to the DOM
+  // should be minimum necessary, maybe add image/url?
 }
 
 function submitClicked() {
