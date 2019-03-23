@@ -14,8 +14,12 @@ function getRecipe(food) {
 // see TODO notes for logic on this
 }
 
-function getRestaurant(food) {
-  console.log(`Currently, functionality to find restaurants serving ${food} is not implemented.`)
+function getLocation(food) {
+  console.log(`Currently, functionality to find restaurants serving ${food} is not fully implemented.`);
+  navigator.geolocation.getCurrentPosition(position => {
+    console.log(`Lat: ${position.coords.latitude}, lon: ${position.coords.longitude}`);
+  });
+  // take latitude and longitude
   // go to restaurant API, get nearby restaurants
   // call function to check restaurant menus
   // write out logic for how this works
@@ -32,6 +36,7 @@ function addRecipes(recipeJson) {
       </li>`
     );
   }
+  // separate this into its own function before final rollout if unable to integrate into one loop
   for (let i = 0; i < recData.length; i++) {
     let j = 1;
     while (recData[i][`strIngredient${j}`] != '') {
@@ -50,7 +55,7 @@ function submitClicked() {
     console.log('submit clicked');
     const food = $(this).find('#searchbar').val();
     getRecipe(food);
-    getRestaurant(food);
+    getLocation(food);
   })
 }
 
