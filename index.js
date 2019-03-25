@@ -15,14 +15,12 @@ function getRecipe(food) {
 }
 
 function getLocation(food) {
-  console.log(`Currently, functionality to find restaurants serving ${food} is not fully implemented.`);
   navigator.geolocation.getCurrentPosition(position => {
-    console.log(`Lat: ${position.coords.latitude}, lon: ${position.coords.longitude}`);
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    console.log(`Latitude: ${lat}, longitude: ${lon}`);
+    findNearbyRestaurants(lat, lon, food);
   });
-  // take latitude and longitude
-  // go to restaurant API, get nearby restaurants
-  // call function to check restaurant menus
-  // write out logic for how this works
 }
 
 function addRecipes(recipeJson) {
@@ -47,6 +45,21 @@ function addRecipes(recipeJson) {
     }
   }
   // should be minimum necessary, maybe add image/url?
+}
+
+function findNearbyRestaurants(lat, lon, food) {
+  console.log(`Currently, functionality to find restaurants serving ${food} is not fully implemented.`);
+  console.log(`Searching for restaurants near lat ${lat} and lon ${lon}...`)
+  const radius = 1000;
+  // go to restaurant API, get nearby restaurants
+  // call function to check restaurant menus
+  // write out logic for how this works
+  // store res-id numbers into array
+  // call function to go through res-id numbers, check menus for string matching typed item
+  const options = {
+    headers: new Headers({
+      'user-key': `${api-key-here}`})
+  }
 }
 
 function submitClicked() {
