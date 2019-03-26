@@ -48,18 +48,27 @@ function addRecipes(recipeJson) {
 }
 
 function findNearbyRestaurants(lat, lon, food) {
-  console.log(`Currently, functionality to find restaurants serving ${food} is not fully implemented.`);
+
   console.log(`Searching for restaurants near lat ${lat} and lon ${lon}...`)
-  const radius = 1000;
-  // go to restaurant API, get nearby restaurants
-  // call function to check restaurant menus
-  // write out logic for how this works
-  // store res-id numbers into array
-  // call function to go through res-id numbers, check menus for string matching typed item
+  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lon}&lon=${lon}5&radius=1000`
   const options = {
     headers: new Headers({
-      'user-key': `${api-key-here}`})
+      'user-key': `replace-with-actual-key`})
   }
+  fetch(url, options)
+    .then(response => response.json())
+    .then(responseJson => checkMenus(responseJson, food));
+}
+
+function checkMenus(responseJson, food) {
+  console.log(`Currently, functionality to check nearby restaurants' menus for ${food} is not fully implemented.`);
+  console.log(responseJson.restaurants);
+  const restIDs = [];
+  for (let i = 0; i < responseJson.restaurants.length; i++) {
+    restIDs.push(responseJson.restaurants[i].restaurant.id);
+  }
+  console.log(restIDs);
+  // call function to go through res-id numbers, check menus for string matching typed item
 }
 
 function submitClicked() {
