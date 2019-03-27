@@ -50,25 +50,44 @@ function addRecipes(recipeJson) {
 function findNearbyRestaurants(lat, lon, food) {
 
   console.log(`Searching for restaurants near lat ${lat} and lon ${lon}...`)
-  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lon}&lon=${lon}5&radius=1000`
+  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=1000`
   const options = {
     headers: new Headers({
-      'user-key': `replace-with-actual-key`})
+      'user-key': `fake-api-key`})
   }
   fetch(url, options)
     .then(response => response.json())
-    .then(responseJson => checkMenus(responseJson, food));
+    .then(responseJson => getMenus(responseJson, food, options));
 }
 
-function checkMenus(responseJson, food) {
+function getMenus(responseJson, food, options) {
   console.log(`Currently, functionality to check nearby restaurants' menus for ${food} is not fully implemented.`);
   console.log(responseJson.restaurants);
-  const restIDs = [];
+  const menus = [];
   for (let i = 0; i < responseJson.restaurants.length; i++) {
-    restIDs.push(responseJson.restaurants[i].restaurant.id);
+    const url = `https://developers.zomato.com/api/v2.1/dailymenu?res_id=${responseJson.restaurants[i].restaurant.id}`;
+    fetch(url, options)
+      .then(response => response.json())
+      .then(responseJson => menus.push(responseJson));
   }
-  console.log(restIDs);
+  console.log(menus);
   // call function to go through res-id numbers, check menus for string matching typed item
+}
+
+function checkMenus(menus) {
+  for (let i = 0; i < menus.length; i++) {
+    const dishes = [];
+    if (menu[i].daily_menus == true) {
+      for (let j = 0; j < daily_menus.length; j++) {
+        dishes.append(menu[i].daily_menus[j].daily_menu[0].dishes)
+      }
+    }
+    console.log(dishes)
+    // go through dishes on the menu
+    // check to make sure food item is in food array
+    // match similar string somehow
+    // if food matches, add to DOM
+  }
 }
 
 function submitClicked() {
