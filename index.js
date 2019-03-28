@@ -7,7 +7,10 @@
 
 function getRecipe(food) {
   console.log('getting recipes...');
-  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${food}`)
+  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?c=${food}`)
+    .then(response => response.json())
+    .then(responseJson => addRecipes(responseJson));
+  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?a=${food}`)
     .then(response => response.json())
     .then(responseJson => addRecipes(responseJson));
 // maybe some kind of catching thing to prevent errors w/ recipe API?
@@ -24,15 +27,19 @@ function getLocation(food) {
 }
 
 function addRecipes(recipeJson) {
-  $('#recipes ul').empty();
-  const recData = recipeJson.meals;
-  for (let i = 0; i < recData.length; i++) {
-    $('#recipes ul').append(
-      `<li id="${recData[i].strMeal}">${recData[i].strMeal}
-        <p>${recData[i].strInstructions}</p>
-        <ol id="recipes-${i}">Ingredients:</ol>
-      </li>`
-    );
+  if (recipeJson.meals == null) {
+    break;
+  } else {
+    $('#recipes ul').empty();
+    const recData = recipeJson.meals;
+    for (let i = 0; i < recData.length; i++) {
+      $('#recipes ul').append(
+        `<li id="${recData[i].strMeal}">${recData[i].strMeal}
+          <p>${recData[i].strInstructions}</p>
+          <ol id="recipes-${i}">Ingredients:</ol>
+        </li>`
+      );
+    }
   }
   // separate this into its own function before final rollout if unable to integrate into one loop
   for (let i = 0; i < recData.length; i++) {
@@ -53,7 +60,7 @@ function findNearbyRestaurants(lat, lon, food) {
   const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=1000`
   const options = {
     headers: new Headers({
-      'user-key': `fake-api-key`})
+      'user-key': `fake-key-here`})
   }
   fetch(url, options)
     .then(response => response.json())
@@ -79,9 +86,11 @@ function checkMenus(menus) {
     const dishes = [];
     if (menu[i].daily_menus == true) {
       for (let j = 0; j < daily_menus.length; j++) {
+
         dishes.append(menu[i].daily_menus[j].daily_menu[0].dishes)
       }
     }
+  
     console.log(dishes)
     // go through dishes on the menu
     // check to make sure food item is in food array
