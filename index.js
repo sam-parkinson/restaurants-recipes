@@ -8,7 +8,6 @@
 function submitClicked() {
   $('form').submit(event => {
     event.preventDefault();
-    console.log('submit clicked');
     const food = $(this).find('#searchbar').val();
     getCategory(food);
     getLocation(food);
@@ -56,7 +55,6 @@ function getLocation(food) {
   navigator.geolocation.getCurrentPosition(position => {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
-    console.log(`Latitude: ${lat}, longitude: ${lon}`);
     findNearbyRestaurants(lat, lon, food);
   });
 }
@@ -74,16 +72,16 @@ function findNearbyRestaurants(lat, lon, food) {
 }
 
 function getCuisineID(responseJson, food, lat, lon) {
-  for (let i = 0; i < responseJson.length; i++) {
-    if (responseJson.cuisines[i].cuisine_name.normalize() === food.normalize()) {
-      const cuisineID = responseJson.cuisines[i].cuisine_ID;
-      getRestaurants(lat, lon, cuisineID)
+  for (let i = 0; i < responseJson.cuisines.length; i++) {
+    if (responseJson.cuisines[i].cuisine.cuisine_name == food) {
+      const cuisineID = responseJson.cuisines[i].cuisine.cuisine_id;
+      getRestaurants(lat, lon, cuisineID);
     }
   }
 }
 
 function getRestaurants(lat, lon, cuisineID) {
-  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=1000&cuisines=${cuisineID}`
+  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=10&cuisines=${cuisineID}`
   const options = {
     headers: new Headers({
       'user-key': `fake-api-key`})
@@ -94,8 +92,16 @@ function getRestaurants(lat, lon, cuisineID) {
 }
 
 function addRestaurants(responseJson) {
-  console.log(responseJson);
-  // this function adds the restaurants to the DOM
+  for (let i = 0; i < responseJson.restaurants.length; i++) {
+    const rest = responseJson.restaurants[i].restaurant;
+    $('#restaurants ul').append(
+      `<li>
+        <a href="${rest.url}">${rest.name}</a>
+        <p>${rest.location.address}
+        ${rest.location.city} ${rest.location.zipcode}</p>
+      </li>`
+    )
+  }
 }
 
 $(submitClicked);
