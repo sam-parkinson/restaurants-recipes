@@ -5,16 +5,51 @@
 // recipe, no restaurant
 // neither of them
 
-function getRecipe(food) {
+function submitClicked() {
+  $('form').submit(event => {
+    event.preventDefault();
+    console.log('submit clicked');
+    const food = $(this).find('#searchbar').val();
+    getCategory(food);
+    getLocation(food);
+  })
+}
+
+function getCategory(food) {
   console.log('getting recipes...');
-  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?c=${food}`)
+  $('#recipes ul').empty();
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${food}`)
     .then(response => response.json())
-    .then(responseJson => addRecipes(responseJson));
-  fetch(`https://www.themealdb.com/api/json/v1/1/search.php?a=${food}`)
+    .then(responseJson => getRecipes(responseJson));
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${food}`)
     .then(response => response.json())
-    .then(responseJson => addRecipes(responseJson));
+    .then(responseJson => getRecipes(responseJson));
 // maybe some kind of catching thing to prevent errors w/ recipe API?
 // see TODO notes for logic on this
+}
+
+function getRecipes(responseJson) {
+  for (let i = 0; i < responseJson.meals.length; i++){
+    fetch (`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${responseJson.meals[i].idMeal}`)
+      .then(meal => meal.json())
+      .then(mealJson => addRecipes(mealJson));
+  }
+}
+
+function addRecipes(mealJson) {
+  $('#recipes ul').append(
+    `<li>${mealJson.meals[0].strMeal}
+      <p>${mealJson.meals[0].strInstructions}</p>
+      <ol id="${mealJson.meals[0].idMeal}">Ingredients:</ol>
+    </li>`
+  );
+  let j = 1;
+    while (mealJson.meals[0][`strIngredient${j}`] != '') {
+      $(`#${mealJson.meals[0].idMeal}`).append(
+        `<li>${mealJson.meals[0][`strIngredient${j}`]}: ${mealJson.meals[0][`strMeasure${j}`]}</li>`
+      );
+      j++;
+    }
 }
 
 function getLocation(food) {
@@ -26,87 +61,41 @@ function getLocation(food) {
   });
 }
 
-function addRecipes(recipeJson) {
-  if (recipeJson.meals == null) {
-    break;
-  } else {
-    $('#recipes ul').empty();
-    const recData = recipeJson.meals;
-    for (let i = 0; i < recData.length; i++) {
-      $('#recipes ul').append(
-        `<li id="${recData[i].strMeal}">${recData[i].strMeal}
-          <p>${recData[i].strInstructions}</p>
-          <ol id="recipes-${i}">Ingredients:</ol>
-        </li>`
-      );
-    }
-  }
-  // separate this into its own function before final rollout if unable to integrate into one loop
-  for (let i = 0; i < recData.length; i++) {
-    let j = 1;
-    while (recData[i][`strIngredient${j}`] != '') {
-      $(`#recipes-${i}`).append(
-        `<li>${recData[i][`strIngredient${j}`]}: ${recData[i][`strMeasure${j}`]}</li>`
-      );
-      j++;
-    }
-  }
-  // should be minimum necessary, maybe add image/url?
-}
-
 function findNearbyRestaurants(lat, lon, food) {
-
   console.log(`Searching for restaurants near lat ${lat} and lon ${lon}...`)
-  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=1000`
+  const url = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`
   const options = {
     headers: new Headers({
-      'user-key': `fake-key-here`})
+      'user-key': `fake-api-key`})
   }
   fetch(url, options)
     .then(response => response.json())
-    .then(responseJson => getMenus(responseJson, food, options));
+    .then(responseJson => getCuisineID(responseJson, food));
 }
 
-function getMenus(responseJson, food, options) {
-  console.log(`Currently, functionality to check nearby restaurants' menus for ${food} is not fully implemented.`);
-  console.log(responseJson.restaurants);
-  const menus = [];
-  for (let i = 0; i < responseJson.restaurants.length; i++) {
-    const url = `https://developers.zomato.com/api/v2.1/dailymenu?res_id=${responseJson.restaurants[i].restaurant.id}`;
-    fetch(url, options)
-      .then(response => response.json())
-      .then(responseJson => menus.push(responseJson));
-  }
-  console.log(menus);
-  // call function to go through res-id numbers, check menus for string matching typed item
-}
-
-function checkMenus(menus) {
-  for (let i = 0; i < menus.length; i++) {
-    const dishes = [];
-    if (menu[i].daily_menus == true) {
-      for (let j = 0; j < daily_menus.length; j++) {
-
-        dishes.append(menu[i].daily_menus[j].daily_menu[0].dishes)
-      }
+function getCuisineID(responseJson, food, lat, lon) {
+  for (let i = 0; i < responseJson.length; i++) {
+    if (responseJson.cuisines[i].cuisine_name.normalize() === food.normalize()) {
+      const cuisineID = responseJson.cuisines[i].cuisine_ID;
+      getRestaurants(lat, lon, cuisineID)
     }
-  
-    console.log(dishes)
-    // go through dishes on the menu
-    // check to make sure food item is in food array
-    // match similar string somehow
-    // if food matches, add to DOM
   }
 }
 
-function submitClicked() {
-  $('form').submit(event => {
-    event.preventDefault();
-    console.log('submit clicked');
-    const food = $(this).find('#searchbar').val();
-    getRecipe(food);
-    getLocation(food);
-  })
+function getRestaurants(lat, lon, cuisineID) {
+  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=1000&cuisines=${cuisineID}`
+  const options = {
+    headers: new Headers({
+      'user-key': `fake-api-key`})
+  }
+  fetch(url, options)
+    .then(response => response.json())
+    .then(responseJson => addRestaurants(responseJson));
+}
+
+function addRestaurants(responseJson) {
+  console.log(responseJson);
+  // this function adds the restaurants to the DOM
 }
 
 $(submitClicked);
