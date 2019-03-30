@@ -6,14 +6,16 @@
 // neither of them
 
 function divClicked() {
-
-  // resize the divs based on which was clicked and which wasn't
+  $('.container').click(function() {
+    $('.container').removeClass('default focused').addClass('unfocused');
+    $(this).removeClass('unfocused').addClass('focused');
+  })
 }
 
 function submitClicked() {
   $('form').submit(event => {
     event.preventDefault();
-    $('.container').removeClass('focused unfocused').addClass('default');
+    $('.container').removeClass('focused unfocused hidden').addClass('default');
     const food = $(this).find('#searchbar').val();
     getCategory(food);
     getLocation(food);
@@ -113,3 +115,4 @@ function addRestaurants(responseJson) {
 }
 
 $(submitClicked);
+$(divClicked);

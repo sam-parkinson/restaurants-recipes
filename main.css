@@ -1,9 +1,9 @@
 /* todo: write basic style for MVP
   should separate info into two columns on desktop
   should separate info into two expandable blocks on mobile
-  centered, sans-serif font
+  make sure OLs containing ingredients are centered with LIs that are left-aligned
   no need for color scheme yet
-  use JS to change size of clicked elements?
+  make sure the style adjusts properly
 */
 
 * {
@@ -35,4 +35,13 @@
 
 .hidden {
   display: none;
+}
+
+.container ul {
+  list-style-type: none;
+  padding: 5px;
+}
+
+.container ul li {
+  margin: 5px;
 }
