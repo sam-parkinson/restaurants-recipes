@@ -3,4 +3,36 @@
   should separate info into two expandable blocks on mobile
   centered, sans-serif font
   no need for color scheme yet
+  use JS to change size of clicked elements?
 */
+
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.container {
+  border: 5px solid black;
+  margin: 5px;
+  padding: 5px;
+}
+
+.focused {
+  height: 100%;
+  overflow: auto;
+}
+
+.unfocused {
+  height: 10%;
+  overflow: clip;
+}
+
+.default {
+  overflow: clip;
+  max-height: 50%;
+}
+
+.hidden {
+  display: none;
+}

@@ -5,12 +5,20 @@
 // recipe, no restaurant
 // neither of them
 
+function divClicked() {
+
+  // resize the divs based on which was clicked and which wasn't
+}
+
 function submitClicked() {
   $('form').submit(event => {
     event.preventDefault();
+    $('.container').removeClass('focused unfocused').addClass('default');
     const food = $(this).find('#searchbar').val();
     getCategory(food);
     getLocation(food);
+    
+    // return divs to their default sizes, maybe toggle categories for this?
   })
 }
 
@@ -81,7 +89,7 @@ function getCuisineID(responseJson, food, lat, lon) {
 }
 
 function getRestaurants(lat, lon, cuisineID) {
-  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=10&cuisines=${cuisineID}`
+  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=10000&cuisines=${cuisineID}`
   const options = {
     headers: new Headers({
       'user-key': `fake-api-key`})
