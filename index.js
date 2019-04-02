@@ -16,6 +16,7 @@ function submitClicked() {
   $('form').submit(event => {
     event.preventDefault();
     $('.container').removeClass('focused unfocused hidden').addClass('default');
+    $('#recipes ul, #restaurants ul').empty();
     const food = $(this).find('#searchbar').val();
     getCategory(food);
     getLocation(food);
@@ -26,7 +27,6 @@ function submitClicked() {
 
 function getCategory(food) {
   console.log('getting recipes...');
-  $('#recipes ul').empty();
   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${food}`)
     .then(response => response.json())
     .then(responseJson => getRecipes(responseJson));
@@ -49,7 +49,7 @@ function addRecipes(mealJson) {
   $('#recipes ul').append(
     `<li>${mealJson.meals[0].strMeal}
       <p>${mealJson.meals[0].strInstructions}</p>
-      <ol id="${mealJson.meals[0].idMeal}">Ingredients:</ol>
+      <ol class="ingred" id="${mealJson.meals[0].idMeal}">Ingredients:</ol>
     </li>`
   );
   let j = 1;

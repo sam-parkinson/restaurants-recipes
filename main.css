@@ -1,7 +1,6 @@
 /* todo: write basic style for MVP
   should separate info into two columns on desktop
   should separate info into two expandable blocks on mobile
-  make sure OLs containing ingredients are centered with LIs that are left-aligned
   no need for color scheme yet
   make sure the style adjusts properly
 */
@@ -12,36 +11,76 @@
   box-sizing: border-box;
 }
 
+header {
+  height: 17vmax;
+}
+
+main {
+  height: 70vmax;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 5vmax;
+}
+
+h1 {
+  font-size: 1.2em;
+}
+
+h2 {
+  font-size: 1.1em;
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+}
+
 .container {
-  border: 5px solid black;
+  border: 2px solid black;
   margin: 5px;
   padding: 5px;
 }
 
 .focused {
-  height: 100%;
-  overflow: auto;
+  height: 55vmax;
+  overflow: scroll;
 }
 
 .unfocused {
-  height: 10%;
-  overflow: clip;
+  height: 15vmax;
+  overflow-y: hidden;
 }
 
 .default {
-  overflow: clip;
-  max-height: 50%;
+  overflow-y: hidden;
+  height: 35vmax;
 }
 
 .hidden {
   display: none;
+  height: 0;
 }
 
-.container ul {
+.container > ul {
   list-style-type: none;
   padding: 5px;
 }
 
-.container ul li {
+.container ul > li {
   margin: 5px;
+  border-top: 1px solid black;
+  padding: 5px;
+}
+
+ol.ingred {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  list-style-type: decimal;
+  width: fit-content;
+}
+
+.ingred li {
+  text-align: left;
 }
