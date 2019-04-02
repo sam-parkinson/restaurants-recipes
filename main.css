@@ -84,3 +84,34 @@ ol.ingred {
 .ingred li {
   text-align: left;
 }
+
+@media screen and (min-width: 600px) {
+
+  header {
+    height: 17vmin;
+  }
+
+  main {
+    flex-direction: row;
+    height: 70vmin;
+    position: static;
+    max-width: 1000px;
+  }
+
+  .default, .focused, .unfocused {
+    height: 100%;
+  }
+
+  .default {
+    width: 50%;
+  }  
+
+  .unfocused {
+    width: 20%;
+  }
+
+  .focused {
+    width: 80%;
+  }
+
+}
