@@ -1,10 +1,5 @@
 'use strict';
 
-// TODO, if possible: error code that returns different possibilities for three possible error states
-// no recipe, but restaurant
-// recipe, no restaurant
-// neither of them
-
 function addRecipes(mealJson) {
   $('#recipes ul').append(
     `<li>${mealJson.meals[0].strMeal}
@@ -13,7 +8,7 @@ function addRecipes(mealJson) {
     </li>`
   );
   let j = 1;
-    while (mealJson.meals[0][`strIngredient${j}`] != '') {
+    while (mealJson.meals[0][`strIngredient${j}`] != '' && mealJson.meals[0][`strIngredient${j}`] != null) {
       $(`#${mealJson.meals[0].idMeal}`).append(
         `<li>${mealJson.meals[0][`strIngredient${j}`]}: ${mealJson.meals[0][`strMeasure${j}`]}</li>`
       );
@@ -25,7 +20,8 @@ function getRecipes(responseJson) {
   for (let i = 0; i < responseJson.meals.length; i++){
     fetch (`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${responseJson.meals[i].idMeal}`)
       .then(meal => meal.json())
-      .then(mealJson => addRecipes(mealJson));
+      .then(mealJson => addRecipes(mealJson))
+      .catch(err => console.log('Recipes not found:', err));
   }
 }
 
@@ -33,10 +29,12 @@ function getCategory(food) {
   console.log('getting recipes...');
   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${food}`)
     .then(response =>response.json())
-    .then(responseJson => getRecipes(responseJson));
+    .then(responseJson => getRecipes(responseJson))
+    .catch(err => console.log(`Category ${food} not found:`, err));
   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${food}`)
     .then(response => response.json())
-    .then(responseJson => getRecipes(responseJson));
+    .then(responseJson => getRecipes(responseJson))
+    .catch(err => console.log(`Area ${food} not found:`, err));
 // maybe some kind of catching thing to prevent errors w/ recipe API?
 // see TODO notes for logic on this
 }
@@ -47,8 +45,7 @@ function addRestaurants(responseJson) {
     $('#restaurants ul').append(
       `<li>
         <a href="${rest.url}">${rest.name}</a>
-        <p>${rest.location.address}
-        ${rest.location.city} ${rest.location.zipcode}</p>
+        <p>${rest.location.address}</p>
       </li>`
     )
   }
@@ -62,7 +59,8 @@ function getRestaurants(lat, lon, cuisineID) {
   }
   fetch(url, options)
     .then(response => response.json())
-    .then(responseJson => addRestaurants(responseJson));
+    .then(responseJson => addRestaurants(responseJson))
+    .catch(err => console.log('No restaurants found in your area:', err));
 }
 
 function getCuisineID(responseJson, food, lat, lon) {
@@ -74,7 +72,7 @@ function getCuisineID(responseJson, food, lat, lon) {
   }
 }
 
-function findNearbyRestaurants(lat, lon, food) {
+function findCuisines(lat, lon, food) {
   console.log(`Searching for restaurants near lat ${lat} and lon ${lon}...`)
   const url = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`
   const options = {
@@ -83,14 +81,15 @@ function findNearbyRestaurants(lat, lon, food) {
   }
   fetch(url, options)
     .then(response => response.json())
-    .then(responseJson => getCuisineID(responseJson, food));
+    .then(responseJson => getCuisineID(responseJson, food))
+    .catch(err => console.log('Unable to retrieve cuisine list:', err));
 }
 
 function getLocation(food) {
   navigator.geolocation.getCurrentPosition(position => {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
-    findNearbyRestaurants(lat, lon, food);
+    findCuisines(lat, lon, food);
   });
 }
 
