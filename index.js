@@ -35,8 +35,6 @@ function getCategory(food) {
     .then(response => response.json())
     .then(responseJson => getRecipes(responseJson))
     .catch(err => console.log(`Area ${food} not found:`, err));
-// maybe some kind of catching thing to prevent errors w/ recipe API?
-// see TODO notes for logic on this
 }
 
 function addRestaurants(responseJson) {
@@ -53,10 +51,7 @@ function addRestaurants(responseJson) {
 
 function getRestaurants(lat, lon, cuisineID) {
   const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=10000&cuisines=${cuisineID}`
-  const options = {
-    headers: new Headers({
-      'user-key': `fake-api-key`})
-  }
+
   fetch(url, options)
     .then(response => response.json())
     .then(responseJson => addRestaurants(responseJson))
@@ -75,10 +70,7 @@ function getCuisineID(responseJson, food, lat, lon) {
 function findCuisines(lat, lon, food) {
   console.log(`Searching for restaurants near lat ${lat} and lon ${lon}...`)
   const url = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`
-  const options = {
-    headers: new Headers({
-      'user-key': `fake-api-key`})
-  }
+
   fetch(url, options)
     .then(response => response.json())
     .then(responseJson => getCuisineID(responseJson, food))
