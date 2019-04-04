@@ -73,7 +73,7 @@ function findCuisines(lat, lon, food) {
 
   fetch(url, options)
     .then(response => response.json())
-    .then(responseJson => getCuisineID(responseJson, food))
+    .then(responseJson => getCuisineID(responseJson, food, lat, lon))
     .catch(err => console.log('Unable to retrieve cuisine list:', err));
 }
 
