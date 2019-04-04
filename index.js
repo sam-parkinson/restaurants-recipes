@@ -50,7 +50,7 @@ function addRestaurants(responseJson) {
 }
 
 function getRestaurants(lat, lon, cuisineID) {
-  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=10000&cuisines=${cuisineID}`
+  const url = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&radius=10000&cuisines=${cuisineID}&sort=real_distance`
 
   fetch(url, options)
     .then(response => response.json())
@@ -90,7 +90,8 @@ function submitClicked() {
     event.preventDefault();
     $('#recipes ul, #restaurants ul').empty();
     $('.container').removeClass('focused unfocused hidden').addClass('default');
-    const food = $(this).find('#searchbar').val();
+    const input = $(this).find('#searchbar').val();
+    const food = input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
     getCategory(food);
     getLocation(food);
     divClicked();
