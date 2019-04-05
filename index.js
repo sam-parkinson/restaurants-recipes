@@ -120,6 +120,7 @@ function getLocation(food) {
 function submitClicked() {
   $('form').submit(event => {
     event.preventDefault();
+    $('.instructions').remove();
     $('.container').removeClass('focused unfocused hidden').addClass('default');
     $('.container ul').empty().append(
       '<p>Finding food...</p>'
