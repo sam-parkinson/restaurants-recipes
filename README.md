@@ -1,10 +1,10 @@
-## Restaurant or Recipe
+# Restaurant or Recipe
 
 A project to help users satisfy their cravings
 
 Try it out: https://github.com/sam-parkinson/restaurants-recipes
 
-# Screenshots
+## Screenshots
 
 Mobile:
 
@@ -17,3 +17,9 @@ Desktop:
 Results:
 
 ![mobile results](screenshots/mobile-focus.png)
+
+## About
+
+Try searching for a particular cuisine to find interesting recipes and nearby restaurants!
+
+Built using HTML, CSS, JavaScript, and jQuery, featuring restaurant data from Zomato's API and recipe data from TheMealDB's API.
