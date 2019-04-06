@@ -9,21 +9,22 @@
   <body>
     <header>
       <h1>Restaurant or Recipe?</h1>
-      <p>Looking for something from a certain cuisine? Find a recipe for it or for a nearby restaurant that serves it!</p>
+      <p>Search for nearby restaurants serving or interesting recipes from a culinary category.</p>
       <form method="GET">
         <label for="searchbar"></label>
         <input type="text" name="searchbar" id="searchbar" placeholder="Italian">
         <button class="searchbutton" type="submit">Search</button>
       </form>
-      <div class="instructions">
-          <p>Click on the list you're interested in exploring to see more!</p>
-          <p>Make sure location services are enabled for optimal results.</p>
-      </div>
+
     </header>
     <main>     
       <div class="container default hidden" id="restaurants">
         <h2>Restaurants</h2>
         <ul></ul>
+      </div>
+      <div class="container instructions">
+          <p>Click on the list you're interested in exploring to see more!</p>
+          <p>Make sure location services are enabled for optimal results.</p>
       </div>
       <div class="container default hidden" id="recipes">
         <h2>Recipes</h2>

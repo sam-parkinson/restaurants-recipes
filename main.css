@@ -11,20 +11,26 @@
   box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+}
+
 header {
-  height: 17vmax;
+  height: auto;
+  background-color: #D4621C;
+  padding: 10px;
 }
 
 main {
-  height: 70vmax;
+  height: 74vmax;
   display: flex;
   flex-direction: column;
   position: relative;
-  top: 5vmax;
 }
 
 h1 {
   font-size: 1.2em;
+  margin: 0;
 }
 
 h2 {
@@ -37,24 +43,25 @@ ul {
 }
 
 .container {
-  border: 2px solid black;
+  border: 3px solid #913700;
+  border-radius: 3px;
   margin: 5px;
   padding: 5px;
 }
 
 .focused {
-  height: 55vmax;
+  height: 58vmax;
   overflow: scroll;
 }
 
 .unfocused {
-  height: 15vmax;
+  height: 16vmax;
   overflow-y: hidden;
 }
 
 .default {
   overflow-y: hidden;
-  height: 35vmax;
+  height: 37vmax;
 }
 
 .hidden {
@@ -69,7 +76,7 @@ ul {
 
 .container ul > li {
   margin: 5px;
-  border-top: 1px solid black;
+  border-top: 1px solid #913700;
   padding: 5px;
 }
 
@@ -85,19 +92,15 @@ ol.ingred {
   text-align: left;
 }
 
-@media screen and (min-width: 600px) {
-
-  header {
-    height: 17vmin;
-  }
+@media screen and (min-width: 650px) {
 
   main {
     flex-direction: row;
-    height: 70vmin;
-    position: static;
+    height: 74vmin;
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center;
   }
 
   .default, .focused, .unfocused {
@@ -114,6 +117,10 @@ ol.ingred {
 
   .focused {
     width: 80%;
+  }
+
+  .instructions {
+    height: 6.21em;
   }
 
 }
