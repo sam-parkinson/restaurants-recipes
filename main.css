@@ -21,6 +21,11 @@ header {
   padding: 10px;
 }
 
+input, button {
+  border: 1px solid #913700;
+  border-radius: 2px;
+}
+
 main {
   height: 74vmax;
   display: flex;
@@ -90,6 +95,16 @@ ol.ingred {
 
 .ingred li {
   text-align: left;
+}
+
+.searchbutton {
+  background-color: #E38348;
+}
+
+.searchbutton:hover {
+  background-color: #6B2900;
+  color: #BABABA;
+  border: 1px solid #FEA772;
 }
 
 @media screen and (min-width: 650px) {
