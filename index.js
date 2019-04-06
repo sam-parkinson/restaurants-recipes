@@ -15,7 +15,8 @@ function recError(logger, food) {
 
 function addRecipes(mealJson) {
   $('#recipes ul').append(
-    `<li>${mealJson.meals[0].strMeal}
+    `<li>
+      <h3>${mealJson.meals[0].strMeal}</h3>
       <p>${mealJson.meals[0].strInstructions}</p>
       <ol class="ingred" id="${mealJson.meals[0].idMeal}">Ingredients:</ol>
     </li>`
@@ -66,7 +67,7 @@ function addRestaurants(responseJson) {
     const rest = responseJson.restaurants[i].restaurant;
     $('#restaurants ul').append(
       `<li>
-        <a href="${rest.url}">${rest.name}</a>
+        <h3><a href="${rest.url}">${rest.name}</a></h3>
         <p>${rest.location.address}</p>
       </li>`
     );
@@ -86,14 +87,18 @@ function getRestaurants(lat, lon, cuisineID, food) {
 }
 
 function getCuisineID(responseJson, food, lat, lon) {
+  let exist = false
   for (let i = 0; i < responseJson.cuisines.length; i++) {
     if (responseJson.cuisines[i].cuisine.cuisine_name == food) {
       const cuisineID = responseJson.cuisines[i].cuisine.cuisine_id;
+      exist = true
       getRestaurants(lat, lon, cuisineID, food);
     }
   }
-  const cont = 'restaurants';
-  noResults(food, cont);
+  if (exist = false) {
+    const cont = 'restaurants';
+    noResults(food, cont);
+  }
 }
 
 function findCuisines(lat, lon, food) {
