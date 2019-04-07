@@ -7,6 +7,7 @@ function noResults(food, cont) {
 }
 
 function recError(logger, food) {
+  // if there are 2 items in logger, no results were found for recipes
   if (logger.length == 2) {
     const cont = 'recipes';
     noResults(food, cont);
@@ -22,7 +23,10 @@ function addRecipes(mealJson) {
     </li>`
   );
   let j = 1;
-    while (mealJson.meals[0][`strIngredient${j}`] != '' && mealJson.meals[0][`strIngredient${j}`] != null) {
+    while (
+      mealJson.meals[0][`strIngredient${j}`] != '' 
+      && mealJson.meals[0][`strIngredient${j}`] != null
+    ) {
       $(`#${mealJson.meals[0].idMeal}`).append(
         `<li>${mealJson.meals[0][`strIngredient${j}`]}: ${mealJson.meals[0][`strMeasure${j}`]}</li>`
       );
@@ -41,7 +45,9 @@ function getRecipes(responseJson) {
 }
 
 function getCategory(food) {
-  console.log('getting recipes...');
+  console.log('Getting recipes...');
+
+  // logger stores error messages
   const logger = [];
   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${food}`)
     .then(response =>response.json())
@@ -87,15 +93,17 @@ function getRestaurants(lat, lon, cuisineID, food) {
 }
 
 function getCuisineID(responseJson, food, lat, lon) {
+  // exist becomes true if the user's input matches a cuisine name in Zomato's API
   let exist = false
   for (let i = 0; i < responseJson.cuisines.length; i++) {
     if (responseJson.cuisines[i].cuisine.cuisine_name == food) {
       const cuisineID = responseJson.cuisines[i].cuisine.cuisine_id;
-      exist = true
+      exist = true;
       getRestaurants(lat, lon, cuisineID, food);
     }
   }
-  if (exist = false) {
+  if (exist == false) {
+    $('#restaurants ul').empty();
     const cont = 'restaurants';
     noResults(food, cont);
   }
