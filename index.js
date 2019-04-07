@@ -73,7 +73,7 @@ function addRestaurants(responseJson) {
     const rest = responseJson.restaurants[i].restaurant;
     $('#restaurants ul').append(
       `<li>
-        <h3><a href="${rest.url}">${rest.name}</a></h3>
+        <h3><a href="${rest.url}" target="_blank">${rest.name}</a></h3>
         <p>${rest.location.address}</p>
       </li>`
     );
