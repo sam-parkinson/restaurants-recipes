@@ -142,15 +142,22 @@ function submitClicked() {
     const food = input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
     getCategory(food);
     getLocation(food);
-    divClicked();
+    divListen();
   })
 }
 
-function divClicked() {
-  $('.container').click(function() {
+
+function divListen() {
+  $('.container').on('click', function() {
     $('.container').removeClass('default focused').addClass('unfocused');
     $(this).removeClass('unfocused').addClass('focused');
-  })
+  });
+  $('.container').keypress(event => {
+    if (event.which == 13) {
+      console.log('Enter key pressed');
+      $(event.currentTarget).click();
+    }
+  });
 }
 
 $(submitClicked);

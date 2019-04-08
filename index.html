@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="main.css">
   </head>
   <body>
-    <header>
+    <header role="heading">
       <h1>Restaurant or Recipe?</h1>
       <p>Search for nearby restaurants serving or interesting recipes from a culinary category.</p>
       <form method="GET">
@@ -16,8 +16,8 @@
         <button class="searchbutton" type="submit">Search</button>
       </form>
     </header>
-    <main>     
-      <div class="container default hidden" id="restaurants" tabindex="0">
+    <main role="main">     
+      <div class="container default hidden" id="restaurants" tabindex="0" role="button">
         <h2>Restaurants</h2>
         <ul></ul>
       </div>
@@ -25,18 +25,16 @@
           <p>Click on the list you're interested in exploring to see more!</p>
           <p>Make sure location services are enabled for optimal results.</p>
       </div>
-      <div class="container default hidden" id="recipes" tabindex="0">
+      <div class="container default hidden" id="recipes" tabindex="0" role="button">
         <h2>Recipes</h2>
         <ul></ul>
       </div>
     </main>
     <script
-    src="https://code.jquery.com/jquery-3.3.1.js"
-    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
     <script src="options.js"></script>
     <script src="index.js"></script>
-    <!-- TODO: after debugging/before submitting,
-    replace jquery link with minified version -->
   </body>
 </html>
